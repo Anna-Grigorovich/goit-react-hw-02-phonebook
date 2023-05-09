@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
+import { ContactForm } from './ContactForm/ContactForm';
+import css from './App.module.css';
 
 class App extends Component {
   state = {
@@ -10,24 +13,54 @@ class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    name: '',
+    filter: '',
   };
   handleForm(e) {
     e.preventDefault();
     const { name, number } = e.currentTarget;
     const { contacts } = this.state;
-    let arrayCont = [];
-    arrayCont = [...contacts, { id: nanoid(), name: name, number: number }];
-    console.log(arrayCont);
-    return this.setState({ ...this.state, contacts: arrayCont });
+    const nameArray = contacts.map(contact => contact.name);
+    if (!nameArray.includes(name.value)) {
+      let arrayCont = [];
+      arrayCont = [
+        ...contacts,
+        { id: nanoid(), name: name.value, number: number.value },
+      ];
+      return this.setState({ ...this.state, contacts: arrayCont });
+    } else {
+      alert('Такой контакт есть, придумай другой');
+    }
+  }
+  changeFilter(e) {
+    this.setState({ filter: e.currentTarget.value });
+  }
+
+  deleteContact(id) {
+    this.setState(p => ({
+      contacts: p.contacts.filter(contact => contact.id !== id),
+    }));
+  }
+
+  getVisibleContacts() {
+    const { filter, contacts } = this.state;
+    const normalizeFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
   }
 
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
-      <div>
+      <div className={css.app}>
         <h1>Phonebook</h1>
-        <form type="submit" onSubmit={this.handleForm}>
+        {/* <form
+          type="submit"
+          onSubmit={e => {
+            this.handleForm(e);
+          }}
+        >
           <label>
             Name
             <input
@@ -50,9 +83,19 @@ class App extends Component {
             />
           </label>
           <button type="submit">Add contact</button>
-        </form>
-        <p>Contacts</p>
-        <ContactList contacts={contacts} />
+        </form> */}
+        <ContactForm
+          onSubmit={e => {
+            this.handleForm(e);
+          }}
+        />
+        <h2>Contacts</h2>
+        <p>Find contacts by name</p>
+        <Filter value={filter} onChange={e => this.changeFilter(e)} />
+        <ContactList
+          contacts={visibleContacts}
+          onDeleteContat={id => this.deleteContact(id)}
+        />
       </div>
     );
   }

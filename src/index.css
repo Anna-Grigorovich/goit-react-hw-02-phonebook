@@ -21,3 +21,15 @@ ul {
 li {
   list-style: none;
 }
+
+h {
+  margin: 0px;
+}
+
+button {
+  margin-left: 5px;
+  background-color: #0a0131ab;
+  color: white;
+  border-radius: 7px;
+  border-color: #f5e8f3ab;
+}
