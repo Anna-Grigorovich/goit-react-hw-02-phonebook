@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import css from './ContactForm.module.css';
 
 export class ContactForm extends Component {
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.onSubmit(e);
   }
@@ -11,9 +11,7 @@ export class ContactForm extends Component {
     return (
       <form
         type="submit"
-        onSubmit={e => {
-          this.handleSubmit(e);
-        }}
+        onSubmit={this.handleSubmit}
         className={css.form}
       >
         <label>

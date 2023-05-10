@@ -15,7 +15,7 @@ class App extends Component {
     ],
     filter: '',
   };
-  handleForm(e) {
+    handleForm = (e) => {
     e.preventDefault();
     const { name, number } = e.currentTarget;
     const { contacts } = this.state;
@@ -31,17 +31,17 @@ class App extends Component {
       alert('Такой контакт есть, придумай другой');
     }
   }
-  changeFilter(e) {
+  changeFilter = (e) => {
     this.setState({ filter: e.currentTarget.value });
   }
 
-  deleteContact(id) {
+  deleteContact = (id) => {
     this.setState(p => ({
       contacts: p.contacts.filter(contact => contact.id !== id),
     }));
   }
 
-  getVisibleContacts() {
+  getVisibleContacts = () => {
     const { filter, contacts } = this.state;
     const normalizeFilter = filter.toLowerCase();
     return contacts.filter(contact =>
@@ -55,46 +55,15 @@ class App extends Component {
     return (
       <div className={css.app}>
         <h1>Phonebook</h1>
-        {/* <form
-          type="submit"
-          onSubmit={e => {
-            this.handleForm(e);
-          }}
-        >
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </label>
-
-          <label>
-            Number
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form> */}
         <ContactForm
-          onSubmit={e => {
-            this.handleForm(e);
-          }}
+          onSubmit={this.handleForm}
         />
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
-        <Filter value={filter} onChange={e => this.changeFilter(e)} />
+        <Filter value={filter} onChange={this.changeFilter} />
         <ContactList
           contacts={visibleContacts}
-          onDeleteContat={id => this.deleteContact(id)}
+          onDeleteContat={ this.deleteContact}
         />
       </div>
     );
