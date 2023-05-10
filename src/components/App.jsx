@@ -19,8 +19,8 @@ class App extends Component {
     e.preventDefault();
     const { name, number } = e.currentTarget;
     const { contacts } = this.state;
-    const nameArray = contacts.map(contact => contact.name);
-    if (!nameArray.includes(name.value)) {
+    const nameArray = contacts.map(contact => contact.name.toLowerCase());
+    if (!nameArray.includes(name.value.toLowerCase())) {
       let arrayCont = [];
       arrayCont = [
         ...contacts,
